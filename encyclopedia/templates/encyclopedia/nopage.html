@@ -1,0 +1,12 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+Page Does Not Exist
+{% endblock %}
+
+{% block body %}
+<p> The page doesn't exist:
+  <li>Go back and Check the spelling</li>
+  <li>Create an entry <a href="{% url 'newentrypage' %}">here</a>.</li>
+</p>
+{% endblock %}
