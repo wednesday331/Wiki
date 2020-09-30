@@ -2,7 +2,7 @@
 
 {% block title %}
     {% if edit %}
-        Make changes to {{ entryname }}:
+        Make changes to {{ entry_name }}:
     {% else %}
         New entry
     {% endif %}
@@ -10,12 +10,12 @@
 
 {% block body %}
     {% if edit %}
-        <h1>Editing {{ entryname }}</h1>
+        <h1>Editing {{ entry_name }}</h1>
     {% else %}
         <h1>Create a new entry:</h1>
     {% endif %}
 
-    {% if pageexists %}
+    {% if page_exists %}
     <div role="alert">
     Page already exists:
     <li><a href="/wiki/{{ entry }}" class="alert-link">click here</a> to view or edit it.</li>
@@ -25,7 +25,7 @@
     <br>
 
     <div class="form-group">
-    <form action="{% url 'newentrypage' %}" method="post">
+    <form action="{% url 'new_entry_page' %}" method="post">
     {% csrf_token %}
     {{ form }}
     <input type = submit>
