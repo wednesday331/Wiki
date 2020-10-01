@@ -37,7 +37,7 @@ def new_entry(request):
             content = form.cleaned_data["content"]
             if (util.get_entry(title) is None or form.cleaned_data["edit_confirmation"] is True):
                 util.save_entry(title,content)
-                return HttpResponseRedirect(reverse("entry_page", kwargs={'entry_name': title}))
+                return HttpResponseRedirect(reverse("entry_page", kwargs={'entryname': title}))
             else:
                 return render(request, "encyclopedia/newentrypage.html", {"form": form,
                                                                           "page_exists": True,
@@ -55,28 +55,28 @@ def new_entry(request):
                                                                 }
                      )
 
-#Existing Entry Page Functions    
-def entry(request, entry_name):
+#Existing Entry Page Functions
+def entry(request, entryname):
     """Contains code to retrieve existing entry pages."""
     markdowner = Markdown()
-    entry_page_data = util.get_entry(entry_name)
+    entry_page_data = util.get_entry(entryname)
     if entry_page_data is not None:
         return render(request, "encyclopedia/entrypage.html",
                       {"entry": markdowner.convert(entry_page_data),
-                       "entry_name": entry_name
+                       "entryname": entryname
                       }
                      )
     else:
-        return render(request, "encyclopedia/nopage.html", {"entry_name": entry_name})
+        return render(request, "encyclopedia/nopage.html", {"entryname": entryname})
 
-#Search Function    
+#Search Function
 def search(request):
     """Contains code to execute search queries."""
     search_word = request.GET.get('q')
     y=util.list_entries()
     if(util.get_entry(search_word) is not None):
         return HttpResponseRedirect(reverse("entry_page",
-                                            kwargs={'entry_name': search_word }
+                                            kwargs={'entryname': search_word }
                                            )
                                    )
     else:
@@ -91,30 +91,30 @@ def search(request):
                       }
                      )
 
-# Edit Function    
-def edit(request, entry_name):
+# Edit Function
+def edit(request, entryname):
     """Contains code to edit existing entry pages"""
-    entry_page_data = util.get_entry(entry_name)
+    entry_page_data = util.get_entry(entryname)
     if entry_page_data is not None:
         form = EntryForm()
-        form.fields["title"].initial = entry_name
+        form.fields["title"].initial = entryname
         form.fields["content"].initial = entry_page_data
         form.fields["edit_confirmation"].initial = True
         return render(request, "encyclopedia/newentrypage.html",
                       {"form": form,
-                       "edit": form.fields["edit_confirmation"].initial, 
+                       "edit": form.fields["edit_confirmation"].initial,
                        "entryname": form.fields["title"].initial
                       }
                      )
     else:
         return render(request, "encyclopedia/nopage.html")
 
-# Random Page Generator    
+# Random Page Generator
 def random(request):
     """Contains code to generate a randome existing entry page."""
     entry_page_list = util.list_entries()
     random_entry_page = secrets.choice(entry_page_list)
     return HttpResponseRedirect(reverse("entry_page",
-                                        kwargs={'entry_name': random_entry_page}
+                                        kwargs={'entryname': random_entry_page}
                                        )
                                )
